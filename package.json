@@ -1,0 +1,35 @@
+{
+  "name": "pw-p-lab-filmes-36339",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/carreira28/PW-P-LAB-Filmes-36339#readme",
+  "bugs": {
+    "url": "https://github.com/carreira28/PW-P-LAB-Filmes-36339/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carreira28/PW-P-LAB-Filmes-36339.git"
+  },
+  "license": "ISC",
+  "author": "Rodrigo",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/client": "^7.5.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "morgan": "^1.10.1",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^7.5.0"
+  }
+}
