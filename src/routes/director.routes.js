@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const directorController = require("../controllers/director.controller");
-const { route } = require("./movies.routes");
 
 router.get("/",directorController.getAllDirectors);
 
