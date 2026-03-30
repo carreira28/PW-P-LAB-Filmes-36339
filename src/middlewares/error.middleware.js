@@ -1,7 +1,17 @@
-module.exports = (err, req, res, nex) => {
-    console.error(err);
+module.exports = (err, req, res, next) => {
+  console.error("[ERRO]", err);
 
-    res.status(500).json({
-        message: "ERO interno no servidor"
-    });
+  if (err.status) {
+    return res.status(err.status).json({ message: err.message });
+  }
+
+  if (err.code === "P2002") {
+    return res.status(409).json({ message: "Registo duplicado: campo único já existe." });
+  }
+
+  if (err.code === "P2025") {
+    return res.status(404).json({ message: "Registo não encontrado." });
+  }
+
+  res.status(500).json({ message: "Erro interno no servidor." });
 };
