@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const directorRoutes = require("./routes/director.routes");
 const movieRoutes = require("./routes/movies.routes");
 const statsRoutes = require("./routes/stats.routes");
