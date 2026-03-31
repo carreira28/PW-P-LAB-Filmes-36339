@@ -17,12 +17,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/auth", authRoutes);
-app.use("/directors", directorRoutes);
-app.use("/movies", movieRoutes);
-app.use("/stats", statsRoutes);
+
+app.use("/directors", authenticateToken, directorRoutes);
+app.use("/movies", authenticateToken, movieRoutes);
+app.use("/stats", authenticateToken, statsRoutes);
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Rota não encontrada" });
+  res.status(404).json({ message: "Rota não encontrada." });
 });
 
 app.use(errorMiddleware);
