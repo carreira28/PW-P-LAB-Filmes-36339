@@ -2,12 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
+const authRoutes = require("./routes/auth.routes");
 const directorRoutes = require("./routes/director.routes");
 const movieRoutes = require("./routes/movies.routes");
 const statsRoutes = require("./routes/stats.routes");
+
+const { authenticateToken } = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
 
 const app = express();
@@ -16,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.use("/auth", authRoutes);
 app.use("/directors", directorRoutes);
 app.use("/movies", movieRoutes);
 app.use("/stats", statsRoutes);
