@@ -6,26 +6,35 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
   password  String
+  role      Role     @default(USER)
+  movies    Movie[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Director {  
-  id          Int @id @default(autoincrement())
-  name        String
-  birthYear   Int
+model Director {
+  id        Int     @id @default(autoincrement())
+  name      String
+  birthYear Int
   movies    Movie[]
 }
 
 model Movie {
-  id          Int @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   releaseYear Int
   directorId  Int
   director    Director @relation(fields: [directorId], references: [id])
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
 }

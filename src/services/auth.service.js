@@ -33,7 +33,8 @@ const signin = async ({ email, password }) => {
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) throw invalidError;
 
-  const payload = { userId: user.id, email: user.email };
+  // Inclui o role no payload para o middleware de autorização poder validar
+  const payload = { userId: user.id, email: user.email, role: user.role };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: "8h",

@@ -13,7 +13,7 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = payload; 
+    req.user = payload;
     next();
   } catch (err) {
     if (err.name === "TokenExpiredError") {
@@ -23,4 +23,17 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-module.exports = { authenticateToken };
+// Middleware de roles — usar DEPOIS de authenticateToken
+// Exemplo de uso: router.delete("/:id", authenticateToken, authorizeRole("ADMIN"), controller)
+const authorizeRole = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: "Acesso negado. Não tens permissão para esta operação.",
+      });
+    }
+    next();
+  };
+};
+
+module.exports = { authenticateToken, authorizeRole };

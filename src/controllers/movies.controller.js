@@ -4,7 +4,9 @@ const directorService = require("../services/director.service");
 const getAllMovies = async (req, res, next) => {
   try {
     const { page, limit, sort } = req.query;
-    const result = await movieService.getAllMovies({ page, limit, sort });
+    // Passa o userId do utilizador autenticado para filtrar os seus filmes
+    const userId = req.user.userId;
+    const result = await movieService.getAllMovies({ page, limit, sort, userId });
     res.json(result);
   } catch (err) {
     next(err);
@@ -62,6 +64,7 @@ const createMovie = async (req, res, next) => {
       title: String(title).trim(),
       releaseYear: parseInt(releaseYear),
       directorId: parseInt(directorId),
+      userId: req.user.userId, // associa o filme ao utilizador autenticado
     });
 
     res.status(201).json(movie);

@@ -1,6 +1,6 @@
 const prisma = require("../prisma/prismaClient");
 
-const getAllMovies = async ({ page = 1, limit = 10, sort } = {}) => {
+const getAllMovies = async ({ page = 1, limit = 10, sort, userId } = {}) => {
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
   const skip = (pageNum - 1) * limitNum;
@@ -10,14 +10,18 @@ const getAllMovies = async ({ page = 1, limit = 10, sort } = {}) => {
     ? { [sort]: "asc" }
     : { id: "asc" };
 
+  // Se userId for fornecido, filtra apenas os filmes desse utilizador
+  const where = userId ? { userId } : {};
+
   const [movies, total] = await prisma.$transaction([
     prisma.movie.findMany({
       skip,
       take: limitNum,
       orderBy,
+      where,
       include: { director: true },
     }),
-    prisma.movie.count(),
+    prisma.movie.count({ where }),
   ]);
 
   return {
@@ -62,6 +66,7 @@ const updateMovie = async (id, data) => {
     include: { director: true },
   });
 };
+
 const deleteMovie = async (id) => {
   return await prisma.movie.delete({ where: { id } });
 };
