@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const movieController = require("../controllers/movies.controller");
-const { authorizeRole } = require("../middlewares/auth.middleware");
+const { authenticateToken, authorizeRole } = require("../middlewares/auth.middleware");
 
 router.get("/search", movieController.searchMovies);
 
@@ -14,6 +14,6 @@ router.post("/", movieController.createMovie);
 router.put("/:id", movieController.updateMovie);
 
 // Apenas utilizadores com role ADMIN podem eliminar filmes
-router.delete("/:id", authorizeRole("ADMIN"), movieController.deleteMovie);
+router.delete("/:id", authenticateToken, authorizeRole("ADMIN"), movieController.deleteMovie);
 
 module.exports = router;
